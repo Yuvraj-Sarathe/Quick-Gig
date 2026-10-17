@@ -1,0 +1,5 @@
+/* TODO: global styles — see docs/architecture-overview.md (index.css)
+   - styling stack is UNDECIDED: Tailwind CSS vs MUI (docs/decisions.md #1)
+   - if Tailwind: add @tailwind base/components/utilities directives here
+   - if MUI: keep this file minimal and build the theme in main.jsx instead
+*/
