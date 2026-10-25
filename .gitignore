@@ -46,7 +46,7 @@ web_modules/
 
 # TypeScript cache
 *.tsbuildinfo
-
+.freebuff/
 # Optional npm cache directory
 .npm
 
@@ -147,3 +147,10 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# QuickGig backend
+backend/.venv/
+backend/quickgig.db
+backend/uploads/
+frontend/.env
+backend/.env
