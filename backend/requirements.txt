@@ -1,8 +1,10 @@
-# TODO: pin dependencies — see docs/architecture-overview.md (requirements.txt)
-# All lines are comments for now; uncomment/add pinned versions as we build.
+# QuickGig backend (demo build) — Bhopal, Madhya Pradesh
 #
-# Core:            Flask, Flask-SQLAlchemy, Flask-Migrate, PyJWT
-# Auth/CORS:       Flask-CORS (React dev server)
-# Email/async:     Flask-Mail, Celery  -> confirm role or drop (docs/decisions.md #3)
-# DB driver:       psycopg2-binary (PostgreSQL) or SQLite for dev (docs/decisions.md #2)
-# Files:           a uploader lib (e.g. Flask-Uploads / werkzeug FileStorage) for resumes
+# Small Flask + SQLite backend. Identity is handled by Supabase Auth, so the
+# server verifies Supabase access tokens (PyJWT + the project's JWKS) instead
+# of storing passwords. See README.md for setup.
+
+flask>=3.0
+flask-cors>=4.0
+PyJWT[crypto]>=2.9
+python-dotenv>=1.0
