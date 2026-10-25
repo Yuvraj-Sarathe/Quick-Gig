@@ -1,4 +1,17 @@
-// TODO: vite config — see docs/architecture-overview.md (vite.config.js)
-// - @vitejs/plugin-react
-// - dev proxy: "/api" -> "http://localhost:5000" (avoids CORS while the backend is in dev)
-// - if Tailwind wins decision #1 (docs/decisions.md), register its plugin here
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// Dev proxy: /api → Flask on 5001 (backend/app.py), so the frontend stays
+// same-origin and uploaded images (served under /api/uploads) also resolve.
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 3000,
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:5001',
+        changeOrigin: true,
+      },
+    },
+  },
+})

@@ -1,5 +1,180 @@
-/* TODO: global styles — see docs/architecture-overview.md (index.css)
-   - styling stack is UNDECIDED: Tailwind CSS vs MUI (docs/decisions.md #1)
-   - if Tailwind: add @tailwind base/components/utilities directives here
-   - if MUI: keep this file minimal and build the theme in main.jsx instead
-*/
+/* QuickGig base styles — see DESIGN.md for the visual system.
+   Theme-color specifics live in theme.js (per BUILD mode); these globals only
+   handle what the JS theme can't reach (selection, focus ring, color-scheme). */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --focus: #217a44;
+  --qg-card-shadow: 0 8px 14px -10px rgba(28, 35, 31, 0.25);
+  /* Real navbar height, published by Navbar.jsx (ResizeObserver). */
+  --qg-nav-h: 64px;
+}
+
+html[data-mode='dark'] {
+  --focus: #4cb473;
+  --qg-card-shadow: 0 8px 14px -10px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}
+
+html[data-mode='light'] {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Scrollbars are hidden everywhere by design (DESIGN.md). The app is
+   scroll-driven and the native bar can't be matched to the palette — wheel,
+   trackpad, touch, keyboard and programmatic scrolling all still work. */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+body {
+  font-family: 'Work Sans', 'Segoe UI', system-ui, sans-serif;
+  background: #fafbf9;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+html[data-mode='dark'] body {
+  background: #0f1711;
+}
+
+a { text-decoration: none; color: inherit; }
+
+::selection {
+  background: #e7f2ea;
+  color: #1c231f;
+}
+
+html[data-mode='dark'] ::selection {
+  background: rgba(76, 177, 115, 0.35);
+  color: #edf3ee;
+}
+
+/* Headlines balance their lines; long prose avoids orphan words */
+h1, h2, h3 { text-wrap: balance; }
+p > strong, .MuiTypography-h1, .MuiTypography-h2 { text-wrap: balance; }
+
+/* Visible keyboard focus everywhere MUI defaults don't already provide it */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Respect users who prefer reduced motion: crossfade/instant instead of travel */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .qg-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Scroll reveals — Reveal.jsx adds .qg-reveal (pre-paint) and .qg-reveal-in
+   when the element enters the viewport. Reveal.jsx with fadeOut enabled also
+   removes .qg-reveal-in on exit, so sections fade in AND out with scroll. */
+.qg-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.55s var(--ease-out),
+    transform 0.55s var(--ease-out);
+}
+
+.qg-reveal-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Line-clamp for card excerpts */
+.qg-line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.qg-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.qg-meta-item svg {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* One-shot entrance used sparingly on first-screen elements */
+@keyframes qg-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.qg-rise {
+  animation: qg-rise 0.42s var(--ease-out) both;
+}
+
+.qg-rise-1 { animation-delay: 0.06s; }
+.qg-rise-2 { animation-delay: 0.14s; }
+.qg-rise-3 { animation-delay: 0.22s; }
+
+/* Theme-matched scrollbars — thin, green-tinted thumb, track matches page bg */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+:root {
+  --scrollbar-thumb: #a8d5ba;
+  --scrollbar-track: #fafbf9;
+}
+
+html[data-mode='dark'] {
+  --scrollbar-thumb: #2d5a3d;
+  --scrollbar-track: #0f1711;
+}
+
+/* WebKit (Chrome/Edge/Safari) — same palette */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 4px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+  border: 2px solid var(--scrollbar-track);
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #217a44;
+}
+html[data-mode='dark'] *::-webkit-scrollbar-thumb:hover {
+  background: #4cb473;
+}
+*::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}
