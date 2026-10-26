@@ -152,5 +152,7 @@ vite.config.ts.timestamp-*
 backend/.venv/
 backend/quickgig.db
 backend/uploads/
+__pycache__/
+*.py[cod]
 frontend/.env
 backend/.env
